@@ -65,6 +65,11 @@
   @keyframes scrollHintBounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(8px); } }
   @keyframes slideFromRight { from { transform:translateX(24px); opacity:0; } to { transform:translateX(0); opacity:1; } }
   @keyframes slideFromLeft { from { transform:translateX(-24px); opacity:0; } to { transform:translateX(0); opacity:1; } }
+  .ba-stack { display:none !important; }
+  @media (max-width:760px) {
+    .ba-wide { display:none !important; }
+    .ba-stack { display:flex !important; }
+  }
   @media (max-width:1100px) {
     .split-card { grid-template-columns:1fr !important; justify-items:center; }
     .split-left, .split-right { max-width:none !important; justify-self:stretch !important; }
@@ -104,21 +109,27 @@
 
   <!-- HERO -->
   <section id="home" style="position:relative; padding:clamp(56px,9vw,120px) clamp(20px,4vw,56px) clamp(64px,8vw,110px); overflow:hidden;">
-    <sc-for list="{{ slides }}" as="s" hint-placeholder-count="3">
-      <img src="{{ s.src }}" alt="Construction site" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:{{ s.opacity }}; transition:opacity 1.2s ease;">
+    <sc-for list="{{ slides }}" as="s" hint-placeholder-count="0">
+      <div role="img" aria-label="Construction site" style="position:absolute; inset:0; background-image:url('{{ s.src }}'); background-size:cover; background-position:center; opacity:{{ s.opacity }}; transition:opacity 1.2s ease;"></div>
     </sc-for>
     <div style="position:absolute; inset:0; background:linear-gradient(120deg, rgba(0,30,68,0.94) 0%, rgba(0,109,193,0.88) 55%, rgba(0,137,240,0.7) 82%, rgba(1,150,164,0.55) 100%);"></div>
-    <div style="position:relative; max-width:1160px; margin:0 auto; display:flex; flex-direction:column; align-items:flex-start; gap:22px;">
-      <h1 key="{{ heroKey }}" style="font-family:'Sora',sans-serif; font-weight:600; font-size:clamp(38px,6vw,60px); line-height:1.05; color:#FFFFFF; margin:0; max-width:820px; animation:heroSlideIn .6s ease;">{{ heroHeadline }}</h1>
-      <p key="{{ heroKey }}-s" style="font-family:'Sora',sans-serif; font-weight:600; font-size:clamp(18px,2.2vw,24px); color:rgba(255,255,255,0.92); margin:0; max-width:640px; animation:heroSlideIn .6s ease .08s backwards;">{{ heroSubhead }}</p>
-      <p key="{{ heroKey }}-p" style="font-family:'Inter',sans-serif; font-weight:400; font-size:17px; line-height:1.7; color:rgba(255,255,255,0.85); margin:0; max-width:640px; animation:heroSlideIn .6s ease .16s backwards;">{{ heroParagraph }}</p>
-      <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:8px;">
-        <a href="#pillars" onClick="{{ handleAnchorClick }}" style="font-family:'Sora',sans-serif; font-weight:700; font-size:15px; color:#FFFFFF; background:transparent; border:1.5px solid rgba(255,255,255,0.7); padding:15px 30px; border-radius:6px;">{{ heroCta }}</a>
-        <!-- Reserved for the fixed brand statement hero:
-        <a href="#contact" onClick="{{ handleAnchorClick }}" style="font-family:'Sora',sans-serif; font-weight:700; font-size:15px; color:#001E44; background:#0089F0; padding:15px 30px; border-radius:6px;">Let's Talk</a>
-        <a href="#pillars" onClick="{{ handleAnchorClick }}" style="font-family:'Sora',sans-serif; font-weight:700; font-size:15px; color:#FFFFFF; background:transparent; border:1.5px solid rgba(255,255,255,0.7); padding:15px 30px; border-radius:6px;">See How We Can Help</a>
-        -->
+    <div style="position:relative; max-width:1160px; margin:0 auto; display:grid;">
+    <sc-for list="{{ heroLayers }}" as="g" hint-placeholder-count="1">
+      <div aria-hidden="{{ g.hidden }}" style="grid-area:1/1; align-self:center; display:flex; flex-direction:column; align-items:flex-start; gap:22px; opacity:{{ g.opacity }}; visibility:{{ g.visibility }}; transform:{{ g.transform }}; pointer-events:{{ g.pe }}; transition:opacity .7s ease, transform .7s ease, visibility .7s;">
+        <h1 style="font-family:'Sora',sans-serif; font-weight:600; font-size:clamp(38px,6vw,60px); line-height:1.05; color:#FFFFFF; margin:0; max-width:820px;">{{ g.h }}</h1>
+        <sc-if value="{{ g.hasS }}"><p style="font-family:'Sora',sans-serif; font-weight:600; font-size:clamp(18px,2.2vw,24px); color:rgba(255,255,255,0.92); margin:0; max-width:640px;">{{ g.s }}</p></sc-if>
+        <p style="font-family:'Inter',sans-serif; font-weight:400; font-size:17px; line-height:1.7; color:rgba(255,255,255,0.85); margin:0; max-width:640px;">{{ g.p }}</p>
+        <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:8px;">
+          <sc-if value="{{ g.brand }}">
+            <a href="#contact" onClick="{{ handleAnchorClick }}" style="font-family:'Sora',sans-serif; font-weight:700; font-size:15px; padding:15px 30px; border-radius:6px; color:#001E44; background:#0089F0;">Let's Talk</a>
+            <a href="#pillars" onClick="{{ handleAnchorClick }}" style="font-family:'Sora',sans-serif; font-weight:700; font-size:15px; padding:15px 30px; border-radius:6px; color:#FFFFFF; background:transparent; border:1.5px solid rgba(255,255,255,0.7);">See How We Can Help</a>
+          </sc-if>
+          <sc-if value="{{ g.notBrand }}">
+            <a href="#pillars" onClick="{{ handleAnchorClick }}" style="font-family:'Sora',sans-serif; font-weight:700; font-size:15px; padding:15px 30px; border-radius:6px; color:#FFFFFF; background:transparent; border:1.5px solid rgba(255,255,255,0.7);">{{ g.cta }}</a>
+          </sc-if>
+        </div>
       </div>
+    </sc-for>
     </div>
     <div style="position:relative; z-index:2; display:flex; gap:10px; justify-content:center; margin-top:44px;">
       <sc-for list="{{ slides }}" as="s" hint-placeholder-count="3">
@@ -269,6 +280,20 @@
           </div>
         </div>
       </div>
+      <img class="ba-wide" src="assets/before-after.png" alt="Before and after A.D.I DEV: an overwhelmed builder buried in paperwork, then the same builder relaxed with clients, construction, trades and growth under control" style="display:block; width:100%; height:auto; margin:clamp(32px,4vw,48px) 0 0; -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 7%,#000 93%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 12%,#000 88%,transparent 100%); -webkit-mask-composite:source-in; mask-image:linear-gradient(90deg,transparent 0%,#000 7%,#000 93%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 12%,#000 88%,transparent 100%); mask-composite:intersect;">
+      <div class="ba-stack" style="display:none; flex-direction:column; align-items:stretch; margin:clamp(28px,6vw,40px) 0 0;">
+        <div style="position:relative;">
+          <img src="assets/ba-before.png" alt="Before: a builder overwhelmed by invoices, quotes and paperwork" style="display:block; width:100%; aspect-ratio:4/3; object-fit:cover; object-position:left center; -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 10%,#000 84%,transparent 100%); -webkit-mask-composite:source-in; mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 10%,#000 84%,transparent 100%); mask-composite:intersect;">
+          <span style="position:absolute; left:14px; top:14px; font-family:'Sora',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.1em; color:#FFFFFF; background:rgba(0,30,68,0.72); padding:6px 12px; border-radius:20px;">BEFORE</span>
+        </div>
+        <div style="position:relative; z-index:2; display:flex; justify-content:center; margin:-34px 0 -34px;">
+          <div style="width:48px; height:48px; border-radius:50%; background:#F28A0E; box-shadow:0 6px 18px rgba(242,138,14,0.4); display:flex; align-items:center; justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M5 13l7 7 7-7"></path></svg></div>
+        </div>
+        <div style="position:relative;">
+          <img src="assets/ba-after.png" alt="After: the same builder relaxed, with clients, construction, trades and growth under control" style="display:block; width:100%; aspect-ratio:5/4; object-fit:cover; object-position:right center; -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 10%,#000 84%,transparent 100%); -webkit-mask-composite:source-in; mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 10%,#000 84%,transparent 100%); mask-composite:intersect;">
+          <span style="position:absolute; left:14px; top:22px; font-family:'Sora',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.1em; color:#FFFFFF; background:#0089F0; padding:6px 12px; border-radius:20px;">WITH A.D.I DEV</span>
+        </div>
+      </div>
       <div class="quote-card" data-hidden-display="grid" style="background:#EEF4FC; border-radius:16px; overflow:hidden; display:none; grid-template-columns:minmax(0,42.3%) 1fr; align-items:stretch; box-shadow:0 12px 32px rgba(0,20,50,0.1);">
         <div class="quote-left" style="position:relative; display:flex; align-items:center; gap:20px; padding:35px clamp(52px,6.4vw,88px) 35px clamp(22px,3.2vw,44px); background:linear-gradient(120deg, rgba(0,30,68,0.82) 0%, rgba(0,89,170,0.72) 100%), url('assets/quote-bg.png') center/cover no-repeat; clip-path:polygon(0 0, 100% 0, 84% 100%, 0 100%);">
           <svg width="66" height="66" viewBox="0 0 24 24" fill="#FFFFFF" stroke="none" style="flex-shrink:0;"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"></path></svg>
@@ -281,7 +306,7 @@
     </div>
   </section>
 
-  <!-- THREE PILLARS -->
+  <!-- THREE PILLARS (flip-card style) — hidden, kept for reference
   <section id="pillars" style="background:#FFFFFF; padding:clamp(56px,8vw,96px) clamp(20px,4vw,56px);">
     <div style="max-width:1200px; margin:0 auto;">
       <h2 style="font-family:'Sora',sans-serif; font-weight:800; font-size:clamp(26px,3.4vw,38px); color:#001E44; margin:0 0 12px; text-align:center;">One partner. Three areas of support.</h2>
@@ -341,28 +366,31 @@
     </div>
   </section>
 
-  <!-- EDITORIAL ALTERNATIVE (for comparison) -->
-  <section id="pillars-editorial" style="background:#FFFFFF; padding:clamp(56px,8vw,96px) clamp(20px,4vw,56px) 55px; border-top:1px dashed rgba(0,30,68,0.15);">
-    <div style="max-width:1200px; margin:0 auto;">
-      <h2 style="font-family:'Sora',sans-serif; font-weight:800; font-size:clamp(26px,3.4vw,38px); color:#001E44; margin:0 0 56px;">One partner. Three areas of support.</h2>
+  -->
 
-      <sc-for list="{{ editorialPillars }}" as="ep" hint-placeholder-count="3">
+  <!-- THREE PILLARS -->
+  <section id="pillars" style="background:#FFFFFF; padding:clamp(56px,8vw,96px) clamp(20px,4vw,56px) 55px;">
+    <div style="max-width:1200px; margin:0 auto;">
+      <h2 style="font-family:'Sora',sans-serif; font-weight:800; font-size:clamp(26px,3.4vw,38px); color:#001E44; margin:0 0 56px; text-align:center;">One partner. Three areas of support.</h2>
+
+      <sc-for list="{{ editorialPillars }}" as="ep" hint-placeholder-count="0">
         <div style="display:flex; flex-direction:column; margin-bottom:44px; border:1px solid rgba(0,30,68,0.1); border-radius:10px; overflow:hidden;">
           <div style="height:5px; background:{{ ep.accent }};"></div>
           <div style="display:flex; flex-wrap:wrap; flex-direction:{{ ep.rowDirection }}; gap:0; align-items:stretch;">
 
           <div style="flex:2 1 0; min-width:280px; display:flex; flex-direction:column;">
-            <div style="background:{{ ep.iconBg }}; padding:36px; display:flex; align-items:center; justify-content:center;">
-              <img src="{{ ep.icon }}" alt="{{ ep.title }} icon" style="width:100%; max-width:160px; height:auto; object-fit:contain;">
+            <div style="position:relative; aspect-ratio:{{ ep.photoRatio }}; overflow:hidden; background:#E8EEF5;">
+              <div role="img" aria-label="{{ ep.title }}" style="position:absolute; inset:0; background-image:url('{{ ep.photo }}'); background-size:cover; background-position:{{ ep.photoPos }};"></div>
+              <div style="position:absolute; left:0; right:0; bottom:0; height:55%; background:linear-gradient(180deg, rgba(255,255,255,0) 0%, {{ ep.fadeMid }} 55%, {{ ep.fade }} 100%); pointer-events:none;"></div>
             </div>
-            <div style="padding:28px 32px; display:flex; flex-direction:column; gap:12px;">
+            <div style="flex:1; padding:12px 32px 28px; display:flex; flex-direction:column; gap:12px; background:linear-gradient(180deg, {{ ep.fade }} 0%, {{ ep.fadeEnd }} 100%);">
               <h3 style="font-family:'Sora',sans-serif; font-weight:700; font-size:22px; color:#001E44; margin:0;">{{ ep.title }}</h3>
               <p style="font-family:'Sora',sans-serif; font-weight:600; font-size:15.5px; color:#001E44; margin:0;">{{ ep.subtitle }}</p>
-              <p style="font-family:'Inter',sans-serif; font-size:14.5px; line-height:1.7; color:#0F1B2B; margin:0;">{{ ep.desc }}</p>
             </div>
           </div>
 
           <div style="flex:3 1 0; min-width:280px; display:flex; flex-direction:column; gap:14px; padding:32px; border-left:{{ ep.dividerLeft }}; border-right:{{ ep.dividerRight }};">
+            <p style="font-family:'Inter',sans-serif; font-size:14.5px; line-height:1.7; color:#0F1B2B; margin:0 0 6px;">{{ ep.desc }}</p>
             <div style="display:flex; align-items:center; justify-content:space-between;">
               <p style="font-family:'Sora',sans-serif; font-weight:700; font-size:16px; color:#001E44; margin:0;">We can help with:</p>
             </div>
@@ -631,12 +659,16 @@
   </section>
 
   <!-- PEOPLE + TECHNOLOGY -->
-  <section id="people-tech" style="background:linear-gradient(150deg,#001E44 0%,#001E44 35%,#006DC1 70%,#0089F0 92%,#0196A4 100%); padding:clamp(56px,8vw,100px) clamp(20px,4vw,56px);">
-    <div style="max-width:1100px; margin:0 auto;">
-      <h2 style="font-family:'Sora',sans-serif; font-weight:800; font-size:clamp(26px,3.4vw,38px); color:#FFFFFF; margin:0 0 44px; text-align:center;">About Us</h2>
+  <section id="people-tech" style="position:relative; background:linear-gradient(120deg,#001E44 0%,#006DC1 55%,#0089F0 82%,#0196A4 100%); padding:0 clamp(20px,4vw,56px) clamp(56px,8vw,100px); overflow:hidden;">
+    <div style="position:absolute; top:0; left:0; right:0; height:760px; background:url('assets/about-bg.png') center 35%/cover no-repeat; -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 72%,rgba(0,0,0,0.6) 88%,transparent 100%); mask-image:linear-gradient(180deg,#000 0%,#000 72%,rgba(0,0,0,0.6) 88%,transparent 100%);"></div>
+    <div style="position:absolute; top:0; left:0; right:0; height:760px; background:linear-gradient(120deg, rgba(0,30,68,0.5) 0%, rgba(0,109,193,0.35) 55%, rgba(0,137,240,0.25) 82%, rgba(1,150,164,0.2) 100%); -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 72%,rgba(0,0,0,0.6) 88%,transparent 100%); mask-image:linear-gradient(180deg,#000 0%,#000 72%,rgba(0,0,0,0.6) 88%,transparent 100%);"></div>
+    <div style="position:relative; max-width:1100px; margin:0 auto;">
+      <div style="height:clamp(300px,36vw,420px); display:flex; align-items:flex-end; justify-content:center; padding-bottom:28px; box-sizing:border-box;">
+        <h2 style="font-family:'Sora',sans-serif; font-weight:400; font-size:clamp(34px,5vw,56px); color:#FFFFFF; margin:0; text-align:center;">About Us</h2>
+      </div>
 
       <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:32px; align-items:stretch;">
-        <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.25); border-radius:10px; padding:28px; display:flex; flex-direction:column; gap:12px;">
+        <div style="background:linear-gradient(120deg, rgba(0,30,68,0.66) 0%, rgba(0,109,193,0.55) 60%, rgba(0,137,240,0.45) 100%); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); border:1px solid rgba(255,255,255,0.25); border-radius:10px; padding:28px; display:flex; flex-direction:column; gap:12px;">
           <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; color:#0196A4;">TODAY</span>
           <h3 style="font-family:'Sora',sans-serif; font-weight:700; font-size:20px; color:#FFFFFF; margin:0;">People</h3>
           <p style="font-family:'Sora',sans-serif; font-weight:700; font-size:16px; line-height:1.45; color:#FFFFFF; margin:0;">Great systems start with people who understand the work.</p>
@@ -644,7 +676,7 @@
           <p style="font-family:'Inter',sans-serif; font-size:14.5px; line-height:1.65; color:rgba(255,255,255,0.85); margin:0;">Today, our people work alongside builders to take ownership of the day-to-day work behind the build - helping keep projects organised, actions moving and businesses running smoothly.</p>
           <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:14.5px; line-height:1.65; color:#FFFFFF; margin:auto 0 0; padding-top:14px; border-top:1px solid rgba(255,255,255,0.2);">Our focus is simple: take work off your plate so you can focus on the work that creates the most value.</p>
         </div>
-        <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.25); border-radius:10px; padding:28px; display:flex; flex-direction:column; gap:12px;">
+        <div style="background:linear-gradient(120deg, rgba(0,30,68,0.66) 0%, rgba(0,109,193,0.55) 60%, rgba(0,137,240,0.45) 100%); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); border:1px solid rgba(255,255,255,0.25); border-radius:10px; padding:28px; display:flex; flex-direction:column; gap:12px;">
           <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; color:#0196A4;">TOMORROW</span>
           <h3 style="font-family:'Sora',sans-serif; font-weight:700; font-size:20px; color:#FFFFFF; margin:0;">People + Technology</h3>
           <p style="font-family:'Sora',sans-serif; font-weight:700; font-size:16px; line-height:1.45; color:#FFFFFF; margin:0;">We're building technology around the way residential builders actually work.</p>
@@ -998,10 +1030,11 @@ class Component extends DCLogic {
     { href: '#careers', label: 'Careers' },
     { href: '#contact', label: 'Contact Us' }
   ];
-  images = ['assets/slide-1.jpg', 'assets/slide-2.jpg', 'assets/slide-3.jpg'];
+  images = ['assets/hero-slide-brand.png', 'assets/slide-1.jpg', 'assets/slide-2.jpg', 'assets/slide-3.jpg'];
   pillarsData = [
     {
       icon: 'assets/icon-tender.png',
+      photo: 'assets/pillar-tender.png', photoPos: 'center', photoRatio: '3 / 2',
       title: 'Tender & Estimation',
       subtitle: 'Price with greater confidence. Tender with greater capacity.',
       desc: 'From reviewing plans and specifications to preparing estimates, take-offs and tender documentation, A.D.I DEV can provide the additional capacity you need when your pipeline grows.',
@@ -1014,6 +1047,7 @@ class Component extends DCLogic {
     },
     {
       icon: 'assets/icon-pm.png',
+      photo: 'assets/pillar-pm.png', photoPos: 'center 30%', photoRatio: '3 / 2.5',
       title: 'Project Management',
       subtitle: 'Keep projects moving. Keep everyone accountable.',
       desc: "Construction projects involve hundreds of moving parts. A.D.I DEV helps keep the back end organised so that actions, information and follow-ups don't get lost.",
@@ -1027,6 +1061,7 @@ class Component extends DCLogic {
     },
     {
       icon: 'assets/icon-admin.png',
+      photo: 'assets/pillar-admin.png', photoPos: 'center', photoRatio: '3 / 2.5',
       title: 'Administration',
       subtitle: 'Take the paperwork off your plate.',
       desc: "Good administration keeps a construction business moving. But when you're running multiple projects, admin quickly becomes a backlog. A.D.I DEV can take responsibility for the day-to-day administrative workload, so you don't have to.",
@@ -1061,7 +1096,7 @@ class Component extends DCLogic {
     this._popStart = setTimeout(() => { cycle(); this.popTimer = setInterval(cycle, 5200); }, 800);
     this.timer = setInterval(() => {
       this.setState(s => ({ slide: (s.slide + 1) % this.images.length }));
-    }, 5000);
+    }, 10000);
     this._scrollTicking = false;
     this.onScroll = () => {
       if (this._scrollTicking) return;
@@ -1126,11 +1161,14 @@ class Component extends DCLogic {
       onClick: () => this.setState({ slide: i })
     }));
     const headlines = [
+      { brand: true, h: 'Empowering Ideas. Delivering Reality.', s: '', p: 'A.D.I DEV provides practical Tender & Estimation, Project Management and Administration support for residential builders - helping you stay organised, keep projects moving and focus on what matters most: your clients, your construction and your growth.' },
       { h: 'Turn Opportunities Into Well-Prepared Tenders', s: 'Tender & Estimation Support', p: 'From plans and specifications through to take-offs, trade quotes and tender documentation, A.D.I DEV helps keep the estimating process organised and moving - giving you more time to focus on winning the right work.', cta: 'Explore Tender & Estimation →' },
       { h: 'Keep Every Project Moving', s: 'Project Management Support', p: 'We help coordinate trades, suppliers, variations, schedules, RFIs, documentation and follow-ups - keeping the work behind the build under control so you can focus on your clients, construction and the decisions that matter.', cta: 'Explore Project Management →' },
       { h: 'Take the Back Office Off Your Plate', s: 'Administration Support', p: 'From invoices and payments to client billing, document management, supplier follow-ups and day-to-day administration, A.D.I DEV takes care of the essential work that keeps your business running.', cta: 'Explore Administration →' }
     ];
     const copy = headlines[this.state.slide % headlines.length];
+    const cur = this.state.slide % headlines.length;
+    const heroLayers = headlines.map((x, i) => { const on = i === cur; return { brand: !!x.brand, notBrand: !x.brand, h: x.h, s: x.s, hasS: !!x.s, p: x.p, cta: x.cta, opacity: on ? 1 : 0, visibility: on ? 'visible' : 'hidden', transform: on ? 'translateX(0)' : 'translateX(24px)', pe: on ? 'auto' : 'none', hidden: on ? 'false' : 'true' }; });
     const setFlip = (i, val) => this.setState(s => {
       const flipped = [...s.flipped];
       flipped[i] = val;
@@ -1172,10 +1210,13 @@ class Component extends DCLogic {
       dividerRight: i % 2 === 0 ? 'none' : '1px solid rgba(0,30,68,0.1)',
       accent: ['#0089F0', '#0196A4', '#006DC1'][i],
       iconBg: ['#EAF4FF', '#E9F7F8', '#EEF1FA'][i],
+      fade: ['#DCEBFB', '#DAF0F2', '#DFE6F5'][i],
+      fadeMid: ['rgba(220,235,251,0.55)', 'rgba(218,240,242,0.55)', 'rgba(223,230,245,0.55)'][i],
+      fadeEnd: ['#F6FAFF', '#F5FBFB', '#F7F9FD'][i],
       groups: p.groups.map(g => ({ ...g, labelUpper: g.label.toUpperCase(), accent: ['#0089F0', '#0196A4', '#006DC1'][i] }))
     }));
     return { linkSvg, splitRef: this.splitRef, charS0: charStyle(0), charS1: charStyle(1), charS2: charStyle(2), charS3: charStyle(3),
-      slides, heroHeadline: copy.h, heroSubhead: copy.s, heroParagraph: copy.p, heroCta: copy.cta, heroKey: this.state.slide % headlines.length, pillars, editorialPillars,
+      slides, heroHeadline: copy.h, heroSubhead: copy.s, heroParagraph: copy.p, heroCta: copy.cta, heroIsBrand: !!copy.brand, heroNotBrand: !copy.brand, heroHasSubhead: !!copy.s, heroLayers, heroKey: this.state.slide % headlines.length, pillars, editorialPillars,
       menuOpen: this.state.menuOpen,
       toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
       closeMenu: () => this.setState({ menuOpen: false }),
