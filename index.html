@@ -1149,7 +1149,7 @@
         <h2 style="font-family:'Sora',sans-serif; font-weight:700; font-size:16px; line-height:1.2; color:#001E44; margin:0;">Privacy Policy</h2>
         <button data-legal-close="1" aria-label="Close" style="display:flex; align-items:center; justify-content:center; width:40px; height:40px; border:none; background:transparent; border-radius:8px; cursor:pointer; color:#001E44;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
       </div>
-      <div data-s="legal-scroll" style="flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px clamp(16px,3vw,32px) 32px;">
+      <div data-s="legal-scroll" style="flex:1; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; padding:12px clamp(16px,3vw,32px) 32px;">
         <div style="font-family:'Inter',sans-serif; font-size:15px; line-height:1.65; color:#0F1B2B; text-wrap:pretty;">
 <p style="margin:0 0 16px; color:#4A5A6E; font-size:13.5px;">Last updated: 27-September-2026</p>
 <h3 style="font-family:'Sora',sans-serif; font-weight:700; font-size:16px; color:#001E44; margin:24px 0 8px;">1. Introduction</h3>
@@ -1259,7 +1259,7 @@
         <h2 style="font-family:'Sora',sans-serif; font-weight:700; font-size:16px; line-height:1.2; color:#001E44; margin:0;">Terms &amp; Conditions</h2>
         <button data-legal-close="1" aria-label="Close" style="display:flex; align-items:center; justify-content:center; width:40px; height:40px; border:none; background:transparent; border-radius:8px; cursor:pointer; color:#001E44;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
       </div>
-      <div data-s="legal-scroll" style="flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px clamp(16px,3vw,32px) 32px;">
+      <div data-s="legal-scroll" style="flex:1; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; padding:12px clamp(16px,3vw,32px) 32px;">
         <div style="font-family:'Inter',sans-serif; font-size:15px; line-height:1.65; color:#0F1B2B; text-wrap:pretty;">
 <p style="margin:0 0 16px; color:#4A5A6E; font-size:13.5px;">Last updated: 27-September-2026</p>
 <p style="margin:0 0 10px;">These Terms &amp; Conditions (“Terms”) govern your access to and use of the A.D.I Dev website at <strong>adidev.com.au</strong> (“Website”).</p>
@@ -1505,7 +1505,7 @@
       d.style.opacity = on ? 1 : 0; d.style.visibility = on ? 'visible' : 'hidden';
       if (p) p.style.transform = on ? 'translateY(0)' : 'translateY(32px)';
     });
-    document.documentElement.style.overflow = k ? 'hidden' : '';
+    document.body.style.overflow = k ? 'hidden' : '';
     if (k) { var sc = $('[data-s="legal-' + k + '"] [data-s="legal-scroll"]'); if (sc) sc.scrollTop = 0; }
   }
   $$('[data-legal-open]').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); setLegal(a.getAttribute('data-legal-open')); }); });
